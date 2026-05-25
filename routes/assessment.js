@@ -1,7 +1,8 @@
 import express from "express"
 import mongoose from "mongoose";
-import Course from "../../models/Course.js";
-import Assessment from "../../models/Assessment.js";
+import Course from "../models/Course.js";
+import Assessment from "../models/Assessment.js";
+import authenticateToken from "../middleware/auth.js";
 
 const app = express();
 
@@ -59,7 +60,7 @@ app.get("/courses/:id/assessments/:assessmentId", async (req, res) => {
     }
 });
 
-app.post("/courses/:id/assessments", async (req, res) => {
+app.post("/courses/:id/assessments", authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -108,7 +109,7 @@ app.post("/courses/:id/assessments", async (req, res) => {
     }
 });
 
-app.put("/courses/:id/assessments/:assessmentId", async (req, res) => {
+app.put("/courses/:id/assessments/:assessmentId", authenticateToken, async (req, res) => {
     try {
         const { id, assessmentId } = req.params;
 
@@ -156,7 +157,7 @@ app.put("/courses/:id/assessments/:assessmentId", async (req, res) => {
     }
 });
 
-app.delete("/courses/:id/assessments/:assessmentId", async (req, res) => {
+app.delete("/courses/:id/assessments/:assessmentId", authenticateToken, async (req, res) => {
     try {
         const { id, assessmentId } = req.params;
 
@@ -174,6 +175,11 @@ app.delete("/courses/:id/assessments/:assessmentId", async (req, res) => {
         }
 
         const deleted = await Assessment.findOneAndDelete({ _id: assessmentId, courseId: id });
+
+        await CodingQuestion.deleteMany({ courseId: id })
+
+        await McQuestion.deleteMany({ courseId: id })
+
         if (!deleted) {
             return res.status(404).json({ message: "Assessment not found" });
         }

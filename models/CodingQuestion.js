@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const condingQuestionSchema = new mongoose.Schema({
+const codingQuestionSchema = new mongoose.Schema({
     courseId: {
         type: mongoose.Types.ObjectId,
         ref: "Course",
@@ -9,6 +9,10 @@ const condingQuestionSchema = new mongoose.Schema({
     assessmentId: {
         type: mongoose.Types.ObjectId,
         ref: "Assessment",
+        required: true
+    },
+    question: {
+        type: String,
         required: true
     },
     code: {
@@ -22,6 +26,6 @@ const condingQuestionSchema = new mongoose.Schema({
     }
 });
 
-const CodingQuestion = mongoose.model('CodingQuestion', condingQuestionSchema);
+const CodingQuestion = mongoose.model('CodingQuestion', codingQuestionSchema);
 
 export default CodingQuestion;
