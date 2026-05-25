@@ -7,6 +7,7 @@ import mcQuestionRoutes from "./routes/mcQuestion.js"
 import adminAuthRoutes from "./routes/auth.js"
 import cors from "cors"
 
+const PORT = process.env.PORT || 4000
 const app = express()
 app.use(cors())
 app.use(json())
@@ -21,6 +22,6 @@ app.get("/", (req, res) => {
     res.status(200).send("Okay")
 })
 
-app.listen(3000, () => {
-    console.log("CDCracker is Ready....")
+app.listen(PORT, () => {
+    console.log(`CDCracker is Ready on port ${PORT}`)
 })
