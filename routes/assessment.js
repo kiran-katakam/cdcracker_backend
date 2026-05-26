@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import Course from "../models/Course.js";
 import Assessment from "../models/Assessment.js";
 import authenticateToken from "../middleware/auth.js";
+import CodingQuestion from "../models/CodingQuestion.js";
+import McQuestion from "../models/McQuestion.js"
 
 const app = express();
 
@@ -176,9 +178,9 @@ app.delete("/courses/:id/assessments/:assessmentId", authenticateToken, async (r
 
         const deleted = await Assessment.findOneAndDelete({ _id: assessmentId, courseId: id });
 
-        await CodingQuestion.deleteMany({ courseId: id })
+        await CodingQuestion.deleteMany({ assessmentId: assessmentId })
 
-        await McQuestion.deleteMany({ courseId: id })
+        await McQuestion.deleteMany({ assessmentId: assessmentId })
 
         if (!deleted) {
             return res.status(404).json({ message: "Assessment not found" });
